@@ -127,8 +127,7 @@ public class NotPokerModule : ModuleScript
 
         // Display message
         ResponseText.GetComponent<Renderer>().enabled = true;
-        // PlaySound("MessageSound");
-        GetComponent<KMAudio>().PlaySoundAtTransform("MessageSound", transform);
+        PlaySound("MessageSound");
     }
 
     private void HandlePressButton2(int index)
@@ -232,7 +231,6 @@ public class NotPokerModule : ModuleScript
 
         // Pick a random hand, but make higher-ranked hands more likely
         var ranksToChooseFrom = rankedHands.Keys.SelectMany(rank => Enumerable.Repeat(rank, rank + 1)).ToList();
-        Log(ranksToChooseFrom);
         var finalHandRank = ranksToChooseFrom.PickRandom();
         var pickedHand = rankedHands[finalHandRank];
         var finalStartingCard = pickedHand.Item1;
