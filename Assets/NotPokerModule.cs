@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using KeepCoding;
 using KModkit;
@@ -7,9 +6,9 @@ using UnityEngine;
 
 public class NotPokerModule : ModuleScript
 {
-    private static readonly string[] PROHIBITED_STARTING_CARDS = {"A♠", "K♥", "5♦", "2♣"};
-    private static readonly string[] BUTTON_NAMES_1 = {"Fold", "Check", "Min Raise", "Max Raise", "All-In"};
-    private static readonly string[] BUTTON_NAMES_2 = {"Truth", "Bluff"};
+    private static readonly string[] PROHIBITED_STARTING_CARDS = { "A♠", "K♥", "5♦", "2♣" };
+    private static readonly string[] BUTTON_NAMES_1 = { "Fold", "Check", "Min Raise", "Max Raise", "All-In" };
+    private static readonly string[] BUTTON_NAMES_2 = { "Truth", "Bluff" };
 
     private static readonly string[] RESPONSES =
     {
@@ -35,6 +34,8 @@ public class NotPokerModule : ModuleScript
         "Royal Flush",
     };
 
+    private static readonly Dictionary<string, List<string>> _usedCardsPerBomb = new Dictionary<string, List<string>>();
+
     public KMBombInfo BombInfo;
     public Texture[] CardTextures;
     public Texture[] ChipTextures;
@@ -51,6 +52,10 @@ public class NotPokerModule : ModuleScript
 
     private void Start()
     {
+        var serialNumber = BombInfo.GetSerialNumber();
+        if (!_usedCardsPerBomb.ContainsKey(serialNumber))
+            _usedCardsPerBomb[serialNumber] = new List<string>();
+
         // Generate puzzle
         GeneratePuzzle();
 
@@ -68,6 +73,12 @@ public class NotPokerModule : ModuleScript
             var j = i++;
             button.Assign(onInteract: () => HandlePressButton2(j));
         }
+
+        BombInfo.OnBombSolved = BombInfo.OnBombExploded = delegate
+        {
+            if (_usedCardsPerBomb.ContainsKey(serialNumber))
+                _usedCardsPerBomb.Remove(serialNumber);
+        };
     }
 
     private void HandlePressButton()
@@ -168,6 +179,10 @@ public class NotPokerModule : ModuleScript
         // Adjust hops
         hops = hops.Take(1).Concat(hops.Skip(1).Select(hop => hop + 1)).ToList();
 
+        // We want to prevent the same card from appearing on multiple Not Poker modules on the same bomb,
+        // but if there are more than 48 Not Poker modules, this is not possible.
+        var preventDuplicates = BombInfo.GetSolvableModuleIDs().Count(m => m == "NotPokerModule") <= 48;
+
         // Determine possible hands
         // doing it in this manner allows us to get a better distribution of random hands as we will pick randomly from
         // the set of possible hand CLASSIFICATIONS rather than the set of possible HANDS (royal flushes are still rare)
@@ -179,9 +194,10 @@ public class NotPokerModule : ModuleScript
             // Choose starting card
             var startingCard = deck[deckIndex];
             if (PROHIBITED_STARTING_CARDS.Contains(startingCard))
-            {
                 continue;
-            }
+
+            if (preventDuplicates && _usedCardsPerBomb[serialNumber].Contains(startingCard))
+                continue;
 
             // Determine hand
             var index = deckIndex;
@@ -209,12 +225,16 @@ public class NotPokerModule : ModuleScript
             }
         }
 
-        // Pick random hand
-        var finalHandRank = rankedHands.Keys.PickRandom();
+        // Pick a random hand, but make higher-ranked hands more likely
+        var ranksToChooseFrom = rankedHands.Keys.SelectMany(rank => Enumerable.Repeat(rank, rank + 1)).ToList();
+        var finalHandRank = ranksToChooseFrom.PickRandom();
         var pickedHand = rankedHands[finalHandRank];
         var finalStartingCard = pickedHand.Item1;
         var finalHand = pickedHand.Item2;
-        
+
+        if (preventDuplicates)
+            _usedCardsPerBomb[serialNumber].Add(finalStartingCard);
+
         // Record solution
         var solution = DetermineHandOutput(finalHandRank);
         _correctButton1 = solution.Item1;
