@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using KeepCoding;
@@ -30,18 +29,6 @@ public static class Extensions
                 prev = e.Current;
             } while (e.MoveNext());
         }
-    }
-
-
-    public static IEnumerable<T> Without<T>(this IEnumerable<T> list, IEnumerable<T> toExclude)
-    {
-        var result = list.ToList();
-        foreach (var item in toExclude)
-        {
-            result.Remove(item);
-        }
-
-        return result;
     }
 
     public static int ToIntViaA1Z26(this char c)

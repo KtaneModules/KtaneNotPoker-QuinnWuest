@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using KeepCoding;
 using KModkit;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class NotPokerModule : ModuleScript
 {
@@ -52,6 +54,7 @@ public class NotPokerModule : ModuleScript
 
     private void Start()
     {
+        // Current bomb data
         var serialNumber = BombInfo.GetSerialNumber();
         if (!_usedCardsPerBomb.ContainsKey(serialNumber))
             _usedCardsPerBomb[serialNumber] = new List<string>();
@@ -74,11 +77,13 @@ public class NotPokerModule : ModuleScript
             button.Assign(onInteract: () => HandlePressButton2(j));
         }
 
-        BombInfo.OnBombSolved = BombInfo.OnBombExploded = delegate
+        // Teardown hooks
+        Action bombTeardown = () =>
         {
             if (_usedCardsPerBomb.ContainsKey(serialNumber))
                 _usedCardsPerBomb.Remove(serialNumber);
         };
+        BombInfo.Assign(onBombSolved: bombTeardown, onBombExploded: bombTeardown);
     }
 
     private void HandlePressButton()
@@ -227,6 +232,7 @@ public class NotPokerModule : ModuleScript
 
         // Pick a random hand, but make higher-ranked hands more likely
         var ranksToChooseFrom = rankedHands.Keys.SelectMany(rank => Enumerable.Repeat(rank, rank + 1)).ToList();
+        Log(ranksToChooseFrom);
         var finalHandRank = ranksToChooseFrom.PickRandom();
         var pickedHand = rankedHands[finalHandRank];
         var finalStartingCard = pickedHand.Item1;
