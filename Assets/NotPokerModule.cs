@@ -300,8 +300,8 @@ public class NotPokerModule : ModuleScript
         var sameSuit = hand.Select(card => card.Item2).Distinct().Count() == 1;
         var numDistinctRanks = hand.Select(card => card.Item1).Distinct().Count();
         var numInBiggestGroup = hand.GroupBy(card => card.Item1).Select(group => group.Count()).Max();
-        var isSuccessive = hand.Select(card => card.Item1).IsSuccessive() ||
-                           hand.Select(card => card.Item1 == 14 ? 1 : card.Item1).IsSuccessive();
+        var isSuccessive = hand.Select(card => card.Item1).IsStraight() ||
+                           hand.Select(card => card.Item1 == 14 ? 1 : card.Item1).IsStraight();
 
         // Determine output
         int handRank;

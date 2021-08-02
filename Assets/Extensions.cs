@@ -5,12 +5,13 @@ using KeepCoding;
 
 public static class Extensions
 {
-    public static bool IsSuccessive(this IEnumerable<int> nums)
+    public static bool IsStraight(this IEnumerable<int> nums)
     {
-        return nums.Pairwise((x, y) => y - x).Distinct().Count() == 1;
+        var differences = nums.Pairwise((x, y) => y - x).Distinct().ToList();
+        return differences.Count == 1 && differences[0] == 1;
     }
 
-    public static IEnumerable<T> Pairwise<T>(this IEnumerable<T> source, Func<T, T, T> selector)
+    public static IEnumerable<TResult> Pairwise<T, TResult>(this IEnumerable<T> source, Func<T, T, TResult> selector)
     {
         if (source == null) throw new ArgumentNullException("source");
         if (selector == null) throw new ArgumentNullException("selector");
@@ -19,7 +20,7 @@ public static class Extensions
         {
             if (!e.MoveNext()) throw new InvalidOperationException("Sequence cannot be empty.");
 
-            T prev = e.Current;
+            var prev = e.Current;
 
             if (!e.MoveNext()) throw new InvalidOperationException("Sequence must contain at least two elements.");
 
