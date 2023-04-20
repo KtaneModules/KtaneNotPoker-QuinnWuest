@@ -12,22 +12,13 @@ MonoBehaviour:
   m_Name: ModConfig
   m_EditorClassIdentifier: 
   id: NotPoker
-  title: Not Poker
+  title: Not Poker [REUPLOAD]
   author: Timwi & ZekNikZ
-  description: 'Oh look it''s poker! Wait, I think it might be bluffing...
-
-
-    Module ID: NotPokerModule
-
-
-    Manual by Timwi
-
-    Implemented by ZekNikZ
-
-
-    Manual: https://ktane.timwi.de/HTML/Not%20Poker.html
-
-    Manual PDF: https://ktane.timwi.de/PDF/Not%20Poker.pdf'
+  description: "Oh look it's poker! Wait, I think it might be bluffing...\r\n\r\nThis
+    is a reupload of ZekNikZ's module with changes and bug fixes. Unsubscribe from
+    the old version here:\r\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=2541692295\r\n\r\nModule
+    ID: NotPokerModule\r\n\r\nManual by Timwi\r\nImplemented by ZekNikZ\r\n\r\n[url=https://ktane.timwi.de/HTML/Not%20Poker.html]Manual
+    HTML[/url]\r\n[url=https://ktane.timwi.de/PDF/Not%20Poker.pdf]Manual PDF[/url]"
   version: 1.0.1
   outputFolder: build
   previewImage: {fileID: 2800000, guid: ac00babeae32acc42a85baa77ac24c7f, type: 3}

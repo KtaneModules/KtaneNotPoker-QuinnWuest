@@ -254,8 +254,7 @@ public class NotPokerModule : ModuleScript
         var RANKS = "2 3 4 5 6 7 8 9 10 A J K Q".Split(' ');
         var SUITS = "♣ ♦ ♥ ♠".Split(' ');
         var imageDeck = (from rank in RANKS from suit in SUITS select rank + suit).ToList();
-        Assign(onActivate: () =>
-            MainCardDisplay.material.mainTexture = CardTextures[imageDeck.IndexOf(finalStartingCard)]);
+        MainCardDisplay.material.mainTexture = CardTextures[imageDeck.IndexOf(finalStartingCard)];
 
         // Choose and setup response
         var response = RESPONSES.PickRandom();

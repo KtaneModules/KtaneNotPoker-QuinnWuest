@@ -11,7 +11,7 @@ public class NotPokerTP : TPScript<NotPokerModule>
         @"(press )?((f|fold|c|check|mn|min|min-raise|mx|max|max-raise|a|allin|b|bluff|t|truth)|(f|fold|c|check|mn|min|mx|max|a|allin) (b|bluff|t|truth))"
         , RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
-    public override IEnumerator ProcessTwitchCommand(string command)
+    public override IEnumerator Process(string command)
     {
         if (Module.IsSolved) yield break;
 
@@ -67,7 +67,7 @@ public class NotPokerTP : TPScript<NotPokerModule>
         }
     }
 
-    public override IEnumerator TwitchHandleForcedSolve()
+    public override IEnumerator ForceSolve()
     {
         if (Module.IsSolved) yield break;
         
