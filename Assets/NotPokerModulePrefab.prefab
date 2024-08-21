@@ -3004,6 +3004,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0991fc634024135429f29182ee1cebf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _editorRuleSeed: 1
   BombInfo: {fileID: 114864165827215996}
   CardTextures:
   - {fileID: 2800000, guid: ab72bcb8848cfef42a733d3dab43b699, type: 3}
@@ -3075,6 +3076,7 @@ MonoBehaviour:
   Buttons2:
   - {fileID: 114679195639870220}
   - {fileID: 114687307481767098}
+  _pressedButton1: 0
 --- !u!114 &114564220079109122
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3230,6 +3232,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TwitchHelpMessage: '!{0} [press] <f|fold|c|check|mn|min|min-raise|mx|max|max-raise|a|allin|b|bluff|t|truth>
     / !{0} [press] <f|fold|c|check|mn|min|mx|max|a|allin> <b|bluff|t|truth>'
+  TwitchManualCode: 
+  TwitchAbandonModule: []
 --- !u!114 &114687307481767098
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -50,7 +50,7 @@ public class NotPokerModule : ModuleScript
 
     internal int _correctButton1;
     internal int _correctButton2;
-    private bool _pressedButton1 = false;
+    public bool _pressedButton1 = false;
 
     private void Start()
     {
